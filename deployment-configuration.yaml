@@ -1,0 +1,14 @@
+configuration:
+  projects:
+    - prod-eng-example-control
+      prod-eng-example-control/Dockerfile
+      prod-eng-example-control
+    - prod-eng-example-logic
+      prod-eng-example-logic/Dockerfile
+      prod-eng-example-logic
+    - prod-eng-example-view
+      prod-eng-example-view/Dockerfile
+      prod-eng-example-view
+  feature-test:
+    -  prod-eng-example-control
+  namespace: ssv
