@@ -1,8 +1,5 @@
 #!/bin/bash
 
-echo "$CURRENT_MATRIX"
-
-echo "$CURRENT_MATRIX" > test.json
-filteredMatrix=$(jq -r . 'test.json' | jq '.include[] | select(.featureTest == "true")')
-test=$(echo "$filteredMatrix" |  jq -n -c '.include |= [inputs]')
-echo "performance_test_matrix=$test"
+echo "$CURRENT_MATRIX" > performance_test.json
+filteredMatrix=$(jq -r . 'performance_test.json' | jq '.include[] | select(.featureTest == "true")' |  jq -n -c '.include |= [inputs]')
+echo "performance_test_matrix=$filteredMatrix"
