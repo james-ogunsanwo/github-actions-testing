@@ -4,7 +4,7 @@ echo $(jq --version)
 
 echo "$CURRENT_MATRIX"
 
-filteredMatrix=$(echo "$CURRENT_MATRIX" | jq '.include[] | select(.featureTest == "true")')
+filteredMatrix=$(echo "$CURRENT_MATRIX" | jq '.[] | select(.featureTest == "true")')
 test=$(echo "$filteredMatrix" |  jq -n -c '.include |= [inputs]')
 echo "performance_test_matrix=$test"
 
