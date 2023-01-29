@@ -1,7 +1,7 @@
 name: Build and test scripts
 
 on:
-  pull_request:
+  push:
 
 jobs:
 
