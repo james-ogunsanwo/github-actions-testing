@@ -4,9 +4,9 @@ npm i yq
 
 ENVIRONOMENT=$1
 
-outputEnv () {
+outputEnv() {
   data=$(jq -n '.include |= [inputs]' | jq -s -c .[])
-  echo "$data" >> "${ENVIRONOMENT}-config.txt"
+  echo "$data" >>"${ENVIRONOMENT}-config.txt"
   echo "$data"
   exit 0
 }
