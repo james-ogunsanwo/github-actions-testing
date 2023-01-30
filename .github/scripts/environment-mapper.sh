@@ -2,8 +2,8 @@
 
 outputMatrix() {
   data=$(jq -n '. |= inputs' | jq -c .)
-  echo "matrix=$(jq -n '. |= inputs' | jq -c .)" >> "$GITHUB_OUTPUT"
-  echo "matrix=$(jq -n '. |= inputs' | jq -c .)"
+  echo "matrix=$data" >> "$GITHUB_OUTPUT"
+  echo "matrix=$data"
 }
 
 eval .github/scripts/convert-configuration.sh dev
