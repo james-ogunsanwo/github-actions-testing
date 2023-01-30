@@ -1,7 +1,7 @@
 #!/bin/bash
 
 outputMatrix() {
-  data=$(jq -n -c'. |= inputs')
+  data=$(jq -n '. |= inputs' | jq -c .)
   echo "matrix=${data}" >> $GITHUB_OUTPUT
   echo "matrix=${data}"
   exit 0
