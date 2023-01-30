@@ -41,7 +41,7 @@ yq -p yaml -o json ".configuration.projects" deployment-configuration.yaml | jq 
       for projects in "${projectNames[@]}"; do
         featureTest=$([[ " ${featureTests[*]} " =~ ${projects} ]] && echo "true" || echo "false")
         performanceTest=$([[ " ${performanceTests[*]} " =~ ${projects} ]] && echo "true" || echo "false")
-        matrixServices+=($(printf '{"serviceName":"%s", "namespace":"%s", "featureTest": "%s", "performanceTest": "%s"}' "${projects}" "${NAMESAPCE}" "${featureTest}" "${performanceTest}"))
+        matrixServices+=($(printf '{"serviceName":"%s", "namespace":"%s", "featureTest": "%s", "performanceTest": "%s"}' "${projects}" "${NAMESAPCE}" "true" "true"))
         let index=${index}+1
       done
 
