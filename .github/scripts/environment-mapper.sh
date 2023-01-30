@@ -11,5 +11,5 @@ eval .github/scripts/convert-configuration.sh dev
 eval .github/scripts/convert-configuration.sh test
 
 jq -n '{dev: $dev, test: $test}' \
-  --arg dev "$(cat dev-config.json)" \
-  --arg test "$(cat test-config.json)" | outputMatrix
+  --arg dev "$(jq . dev-config.json)" \
+  --arg test "$(jq . test-config.json)" | outputMatrix
