@@ -1,28 +1,21 @@
 #!/bin/bash
 
-VERISON=1.101.1
-
 npm i yq
 
-outputMatrix() {
-      data=$(jq -n '.include |= [inputs]' | jq -s -c .[])
-      echo "matrix=$data" >>  $GITHUB_OUTPUT
+ENVIRONOMENT=$1
+
+outputEnv () {
+  data=$(jq -n '.include |= [inputs]' | jq -s -c .[])
+  echo "$data" >> "${ENVIRONOMENT}-config.json"
+  exit 0
 }
 
 projectNames=()
-dockerFilePaths=()
-dockerFileContext=()
 yq -p yaml -o json ".configuration.projects" deployment-configuration.yaml | jq -c '.[]' | {
   while read projecs; do
     projectList=($(echo "$projecs" | tr -d '"' | tr ";" "\n"))
-    projectNames+=("${projectList[0]}")
-
-    if [ -e "${projectList[1]}" ]; then
-      dockerFilePaths+=("${projectList[1]}")
-      dockerFileContext+=("${projectList[2]}")
-    else
-      echo "invalid docker file path ${projectList[1]}"
-      exit 1
+    if [ "${projectList[1]}" != "$ENVIRONOMENT" ]; then
+      projectNames+=("${projectList[0]}")
     fi
   done
 
@@ -33,16 +26,25 @@ yq -p yaml -o json ".configuration.projects" deployment-configuration.yaml | jq 
       featureTests+=("$featureTest")
     done
 
-    NAMESAPCE=$(yq -r ".configuration.namespace" deployment-configuration.yaml)
+    performanceTests=()
+    yq -p yaml -o json ".configuration.performance-test" deployment-configuration.yaml | jq -c '.[]' | {
+      while read performanceTestElement; do
+        performanceTest=$(echo "$performanceTestElement" | tr -d '"')
+        performanceTests+=("$performanceTest")
+      done
 
-    index=0
-    matrixServices=()
-    for projects in "${projectNames[@]}"; do
-      featureTest=$([[ " ${featureTests[*]} " =~ ${projects} ]] && echo "true" || echo "false")
-      matrixServices+=($(printf '{"serviceName":"%s", "dockerFilePath":"%s", "dockerContext":"%s", "version":"%s","namespace":"%s", "featureTest": "%s"}' "${projects}" "${dockerFilePaths[index]}" "${dockerFileContext[index]}" "${VERISON}" "${NAMESAPCE}" "${featureTest}"))
-      let index=${index}+1
-    done
+      NAMESAPCE=$(yq -r ".configuration.namespace" deployment-configuration.yaml)
 
-    echo "${matrixServices[@]}" | outputMatrix
+      index=0
+      matrixServices=()
+      for projects in "${projectNames[@]}"; do
+        featureTest=$([[ " ${featureTests[*]} " =~ ${projects} ]] && echo "true" || echo "false")
+        performanceTest=$([[ " ${performanceTests[*]} " =~ ${projects} ]] && echo "true" || echo "false")
+        matrixServices+=($(printf '{"serviceName":"%s", "namespace":"%s", "featureTest": "%s", "performanceTest": "%s"}' "${projects}" "${NAMESAPCE}" "${featureTest}" "${performanceTest}"))
+        let index=${index}+1
+      done
+
+      echo "${matrixServices[@]}" | outputEnv
+    }
   }
 }

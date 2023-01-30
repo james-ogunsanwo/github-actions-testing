@@ -1,14 +1,22 @@
 configuration:
   projects:
     - prod-eng-example-control
-      prod-eng-example-control/Dockerfile
-      prod-eng-example-control
     - prod-eng-example-logic
-      prod-eng-example-logic/Dockerfile
-      prod-eng-example-logic
+      dev
     - prod-eng-example-view
-      prod-eng-example-view/Dockerfile
-      prod-eng-example-view
   feature-test:
-    -  prod-eng-example-control
+    - prod-eng-example-control
+  performance-test:
+    - prod-eng-example-control
   namespace: ssv
+  environment:
+    - dev
+    - test
+
+# project
+# service name
+# env exclusions (still deploys docker image for env)
+
+# test
+# repo
+# workflow_file_name

@@ -11,7 +11,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - id: set-matrix
-        run: ./.github/scripts/convert-configuration.sh
+        run: ./.github/scripts/environment-mapper.sh
         env:
           # All apps share the same version, so they can all be deployed and rolled back together (coupling deployments).
           # To change this edit the deployment configuration file to only deploy the app required if preferred. (OPTIONAL)
