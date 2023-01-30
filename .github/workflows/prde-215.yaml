@@ -27,6 +27,6 @@ jobs:
       - id: set-performance-test-matrix
         run: ./.github/scripts/performance-test-matrix.sh
         env:
-          CURRENT_MATRIX: ${{ toJson(needs.configuration.outputs.matrix.dev) }}
+          CURRENT_MATRIX: ${{ fromJson(env.PACKAGE_JSON).dev }}
     outputs:
       performance-test-matrix: ${{ steps.set-performance-test-matrix.outputs.performance-test-matrix }}
