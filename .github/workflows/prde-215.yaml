@@ -16,17 +16,11 @@ jobs:
           # All apps share the same version, so they can all be deployed and rolled back together (coupling deployments).
           # To change this edit the deployment configuration file to only deploy the app required if preferred. (OPTIONAL)
           VERSION: 1.0.0
-    outputs:
-      matrix: ${{ steps.set-matrix.outputs.matrix }}
-
-  performance-test-configuration:
-    runs-on: ubuntu-latest
-    needs: [ configuration ]
-    steps:
-      - uses: actions/checkout@v3
       - id: set-performance-test-matrix
         run: ./.github/scripts/performance-test-matrix.sh
         env:
-          CURRENT_MATRIX: ${{ fromJson(toJson(needs.configuration.outputs.matrix)).dev }}
+          CURRENT_MATRIX: ${{ fromJSON(steps.set-matrix.outputs.matrix).dev }}
     outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
       performance-test-matrix: ${{ steps.set-performance-test-matrix.outputs.performance-test-matrix }}
+
