@@ -26,5 +26,5 @@ outputMatrix() {
 eval .github/scripts/convert-configuration.sh dev
 eval .github/scripts/convert-configuration.sh test
 
-jq -n "$(cat .github/scripts/dev-config.json)"  | outputMatrix dev
-jq -n "$(cat .github/scripts/test-config.json)"  | outputMatrix test
+jq -n "$(cat dev-config.json)"  | outputMatrix dev
+jq -n "$(cat test-config.json)"  | outputMatrix test

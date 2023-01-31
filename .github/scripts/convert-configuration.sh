@@ -6,7 +6,7 @@ ENVIRONOMENT=$1
 
 outputEnv() {
   data=$(jq -n '.include |= [inputs]' | jq -s -c .[])
-  echo "$data" >>"${ENVIRONOMENT}-config.txt"
+  echo "$data" >>"${ENVIRONOMENT}-config.json"
   echo "$data"
   exit 0
 }
